@@ -12,4 +12,7 @@ public interface customersdao {
 	List<customers> getAllCustomers() throws ClassNotFoundException, SQLException;
 	public customers searchByEmail(String email) throws ClassNotFoundException, SQLException;
 	boolean exists(int customerId) throws ClassNotFoundException, SQLException;
+	int authenticateCustomer(String Email,String password) throws ClassNotFoundException, SQLException;
+	void updatingpwd(String password,String Email) throws ClassNotFoundException, SQLException;
 }
+
