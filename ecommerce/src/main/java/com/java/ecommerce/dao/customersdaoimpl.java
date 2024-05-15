@@ -105,5 +105,35 @@ public class customersdaoimpl implements customersdao {
         ResultSet rs = pst.executeQuery();
         return rs.next();
     }
+	
 
-}
+@Override
+	public int authenticateCustomer(String Email, String password) throws ClassNotFoundException, SQLException {
+		updatingpwd(password,Email);
+		String connStr = DBPropertyUtil.connectionString("db");
+		connection = DBConnUtil.getConnection(connStr);
+		String encr = encryptpassword.getCode(password);
+		String cmd = "select count(*) cnt from Customers where email = ? and password=? ";
+		pst = connection.prepareStatement(cmd);
+		pst.setString(1, Email);
+		pst.setString(2, encr);
+		ResultSet rs = pst.executeQuery();
+		rs.next();
+		int cnt = rs.getInt("cnt");
+		return cnt;	}
+	@Override	
+	public void updatingpwd(String password,String Email) throws ClassNotFoundException, SQLException 
+	{		
+		String connStr = DBPropertyUtil.connectionString("db");
+		connection = DBConnUtil.getConnection(connStr);
+		String encr = encryptpassword.getCode(password);
+		String cmd="update customers set password=? where password=?";
+		pst=connection.prepareStatement(cmd);
+		pst.setString(1, encr);
+		pst.setString(2, password);
+		pst.executeUpdate();			
+	}
+
+
+
+	}
